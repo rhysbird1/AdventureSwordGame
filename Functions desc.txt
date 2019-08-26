@@ -1,0 +1,12 @@
+functions:
+
+pushBestStage()
+If player reachers a new best stage, push into array and display on screen
+
+activeEnemy(name, hp, damage...)
+Actives an enemy and imports their combat stats
+
+1,2,3,4,5,6,7,8
+11,12,13,14,15
+
+https://stackoverflow.com/questions/28287914/how-to-change-the-speed-of-setinterval-in-real-time

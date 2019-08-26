@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adventure Sword Game</title>
+    <script src="equipment.js"></script>
+    <script src="locations.js"></script>
+    <script src="enemies.js"></script>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loadHUD()" id="body">
+    <div class="current-location">
+        <span id="area"></span>
+        <br>
+        <span id="locAdj"></span>
+        <span id="locNoun"></span>
+        <br>
+        <span id="currentStage"></span>/<span id="totalStages"></span>
+        <br>
+        <span id="bestStageText">
+            Best Stage: <span id="bestStage">1</span>
+        </span>
+    </div>
+    <div class="hud-left">
+        <div id="playerHealth" class="hud-box">
+            Health
+            <span id="currentPlayerHealth"></span> /
+            <span id="maxPlayerHealth"></span>
+        </div>
+        <div id="playerBoneShards" class="hud-box">
+            Bone Shards
+                <span id="currentBoneShards"></span>
+        </div>
+        <div id="equipment" class="hud-box">
+            <span>Equipment</span><br><br>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>&nbsp;Weapon</td>
+                        <td>&nbsp;<span id="weapon"></span></td>
+                        <td class="upgrade-arrow" onclick="upgradeWeapon()">&#8679;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Armour</td>
+                        <td>&nbsp;<span id="armour"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Head</td>
+                        <td>&nbsp;<span id="head"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Gloves</td>
+                        <td>&nbsp;<span id="gloves"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Boots</td>
+                        <td>&nbsp;<span id="boots"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Ring 1</td>
+                        <td>&nbsp;<span id="ring1"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Ring 2</td>
+                        <td>&nbsp;<span id="ring2"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Ring 3</td>
+                        <td>&nbsp;<span id="ring3"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Ring 4</td>
+                        <td>&nbsp;<span id="ring4"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Belt</td>
+                        <td>&nbsp;<span id="belt"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Pocket</td>
+                        <td>&nbsp;<span id="pocket"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Aura</td>
+                        <td>&nbsp;<span id="aura"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="hud-box player-xp">
+            Current Level: <span id="currentRunLevel"></span>
+            <div id="xp">
+                <div id="xpBar"></div>
+            </div>
+        </div>
+        <div class="hud-box scrolls" style="font-size: 12px">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>&nbsp;Weapon Scroll</td>
+                        <td>&nbsp;<span id="weaponScroll"></span></td>
+                        <td>&nbsp;Ring 2 Scroll</td>
+                        <td>&nbsp;<span id="ring2Scroll"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Armour Scroll</td>
+                        <td>&nbsp;<span id="armourScroll"></span></td>
+                        <td>&nbsp;Ring 3 Scroll</td>
+                        <td>&nbsp;<span id="ring3Scroll"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Head Scroll</td>
+                        <td>&nbsp;<span id="headScroll"></span></td>
+                        <td>&nbsp;Ring 4 Scroll</td>
+                        <td>&nbsp;<span id="ring4Scroll"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Gloves Scroll</td>
+                        <td>&nbsp;<span id="glovesScroll"></span></td>
+                        <td>&nbsp;Belt SCroll</td>
+                        <td>&nbsp;<span id="beltScroll"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Boots Scroll</td>
+                        <td>&nbsp;<span id="bootsScroll"></span></td>
+                        <td>&nbsp;Pocket Scroll</td>
+                        <td>&nbsp;<span id="pocketScroll"></span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Ring 1 Scroll</td>
+                        <td>&nbsp;<span id="ring1Scroll"></span></td>
+                        <td>&nbsp;Aura Scroll</td>
+                        <td>&nbsp;<span id="auraScroll"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="hud-main">
+        <div class="hud-box enemy">
+            <div id="currentEnemyName"></div>
+            <div id="currentEnemyHealth">
+                <div id="enemyHealth"></div>
+            </div>
+        </div>
+        <div id="startCombat">
+            <input type="button" class="hud-box startCombatBtn" value="Start" onclick="startCombat()">
+        </div>
+    </div>
+    <div class="hud-right">
+        <div class="hud-box combat-log"><b>Combat Log</b></div>
+        <div id="combatLog"></div>
+    </div>
+    <div id="overlay">
+        <div id="overlayText">You Died (Test Overlay)</div>
+    </div>
+        <div id="overlaySkills">
+        <div id="overlayText">Choose skill</div>
+    </div>
+    <div class="tooltip">Hover Me to Preview
+    <div class="tooltip-text">
+        <h3>Lorem Ipsum</h3>
+        <p>Dolor sit amet, consectetur adipiscing elit.</p>
+        <i></i>
+    </div>
+</div>
+</body>
+</html>
