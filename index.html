@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Adventure Sword Game</title>
+    <title>Adventure Sword Game - 0.1.9.0</title>
     <script src="equipment.js"></script>
     <script src="locations.js"></script>
     <script src="enemies.js"></script>
@@ -39,11 +39,24 @@
                     <tr>
                         <td>&nbsp;Weapon</td>
                         <td>&nbsp;<span id="weapon"></span></td>
-                        <td class="upgrade-arrow" onclick="upgradeWeapon()">&#8679;</td>
-                    </tr>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(weapon)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededWep"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededWep"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
+                     </tr>
                     <tr>
                         <td>&nbsp;Armour</td>
                         <td>&nbsp;<span id="armour"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(armour)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="tpBsNeededArm"></span> Bone Shards</p>
+                                <p><span id="tpWsNeededArm"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Head</td>
@@ -145,25 +158,18 @@
             </div>
         </div>
         <div id="startCombat">
-            <input type="button" class="hud-box startCombatBtn" value="Start" onclick="startCombat()">
+            <input type="button" class="hud-box startCombatBtn" value="Fight" onclick="startCombat()">
         </div>
     </div>
     <div class="hud-right">
-        <div class="hud-box combat-log"><b>Combat Log</b></div>
+        <div class="hud-box combat-log">
+            <div style="font-weight:bold">Combat Log</div>
+            <ul id="combatLog"></ul>
+        </div>
         <div id="combatLog"></div>
     </div>
     <div id="overlay">
         <div id="overlayText">You Died (Test Overlay)</div>
     </div>
-        <div id="overlaySkills">
-        <div id="overlayText">Choose skill</div>
-    </div>
-    <div class="tooltip">Hover Me to Preview
-    <div class="tooltip-text">
-        <h3>Lorem Ipsum</h3>
-        <p>Dolor sit amet, consectetur adipiscing elit.</p>
-        <i></i>
-    </div>
-</div>
 </body>
 </html>
