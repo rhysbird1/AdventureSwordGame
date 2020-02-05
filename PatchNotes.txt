@@ -1,0 +1,10 @@
+Patch Notes
+
+0.1.9.0
+- Added scroll drops.
+- Changed combat log to improve readability.
+- Combat log is now deleted when the player dies.
+- Added bone shard gains to combat log.
+- Added Fyrevale background image.
+- Disabled right click in browser to deter cheating through inspector.
+- Added weapon and armour names.
