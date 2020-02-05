@@ -4,6 +4,13 @@
     cursor: default;
 }
 
+body {
+    background-image: url('../images/village50.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
 .hud-left {
     margin-left: 10px;
     margin-right: 75px;
@@ -38,10 +45,17 @@
     margin-bottom: 15px;
     padding: 5px;
     box-shadow: 0px 1px 8px rgba(0,0,0,0.5);
+    background-color: #fff;
 }
 
 .combat-log {
     height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+#combatLog {
+    list-style-type: none;
 }
 
 #playerHealth {
@@ -115,6 +129,11 @@ tr, td {
     color: green;
     font-size: 18px;
     cursor: pointer;
+     
+}
+
+.upgrade-arrow:hover {
+    color: #000;
 }
 
 #xp {
@@ -134,7 +153,6 @@ tr, td {
     width: 100%;
     background-color: #bfbfbf;
     border: 1px solid #000;
-    height: 30px;
 }
 
 #enemyHealth {
@@ -165,7 +183,7 @@ tr, td {
     border: 3px solid #438246;
 }
 
-#overlay, #overlaySkills {
+#overlay {
   position: fixed;
   display: none;
   width: 100%;
@@ -199,11 +217,11 @@ tr, td {
 }
 
 .tooltip .tooltip-text {
-    min-width: 200px; 
+    min-width: 150px; 
     top: 40px;
     left: 50%;
     transform: translate(-50%, 0);
-    padding: 10px 20px;
+    padding: 3px 20px;
     color: #DDDDDD;
     background-color: #333333;
     font-weight: normal;
