@@ -2,107 +2,142 @@ var slot = {};
 
 var effect = {}
 
-var weapon = { name: "Steel Sword",
+var weapon = { name: ["Empty","Wooden Dagger", "Bronze Dagger", "Bronze Sword", "Iron Sword", 
+                      "Steel Longsword", "Steel Claymore", "Greatsword", "Obisidian Dagger", 
+                      "Obsidian Sword", "Glass WarAxe", "Crystal Dagger", "Crystal Greatsword"],
                level: 1,
-               baseDamage: 15,
+               scroll: 1,
+               baseDamage: 75, //15 default
                bonusDamage: 0,
-               hitChance: 52,
+               hitChance: 80, //40 default
                bonusHitChance: 0,
-               critDamage: 1.4,
+               critDamage: 1.2,
                critDamageBonus: 0,
                critChance: 3,
                critChanceBonus: 0,
                baseAttackSpeed: 2000,
                bonusAttackSpeed: 0,
-               scrollCost: 1,
-               shardCost: 10,
+               shardsNeededToUpgrade: 5,
+               scrollsNeededToUpgrade: 1,
+               isOwned: true
              };
 
-var armour = { name: "Empty",
-               level: 1,
-               baseHealth: 400,
+var armour = { name: ["Empty", "Wooden Armour", "Rugged Leather", "Hard Leather", "Bronze Armour",
+                      "Iron Armour", "Steel Armour", "Mithril Armour", "Obisidian Armour", "Glass Armour", "Crystal Amour", "Elder Armour"],
+               level: 0,
+               scroll: 0,
+               baseHealth: 0,
                bonusHealth: 0,
                baseDodgeChance: 2,
                bonusDodgeChance: 0,
+               shardsNeededToUpgrade: 2,
+               scrollsNeededToUpgrade: 1,
                isOwned: false,
              };
 
-var head =   { name: "Empty",
+var head =   { name: ["Empty", "Leaf Cowl", "Cloth Headwrap", "Turtle Shell", "Wooden Helmet",
+                      "Plated Hood", "Spidersilk Hood", "Obisidian Helmet", "Glass Helmet"
+                      ],
+               level: 0,
+               scroll: 0,
                isOwned: false,
              };
 
-var gloves = { name: "Empty",
+var gloves = { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                hitChance: 0,
                isOwned: false,
              };
 
-var boots =  { name: "Empty",
+var boots =  { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                dodgeChance: 0,
                isOwned: false,
              };
 
-var ring1 =  { name: "Empty",
+var ring1 =  { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                isOwned: false,
              };
 
-var ring2 =  { name: "Empty",
+var ring2 =  { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                xpBonus: 0,
                isOwned: false,
              };
 
-var ring3 =  { name: "Empty",
+var ring3 =  { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                isOwned: false,
              };
 
-var ring4 =  { name: "Empty",
+var ring4 =  { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                isOwned: false,
              };
 
-var belt =   { name: "Empty",
+var belt =   { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                critChance: 0,
                critDamage: 0,
                isOwned: false,
              };
 
-var pocket = { name: "Empty",
+var pocket = { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                boneShardBonus: 0,
                isOwned: false,
              };
 
-var aura =   { name: "Empty",
+var aura =   { name: ["Empty"],
+               level: 0,
+               scroll: 0,
                isOwned: false,
              };
 
-var weaponScrollCost = 1;
-var weaponScrollMultiplier = 1;
-var weaponShardCost = 10;
-var weaponShardMultiplier = 2;
 
-function upgradeWeapon(){
-    if (player.boneShards >= weaponShardCost &&
-        player.weaponScroll >= weaponScrollCost){
-        player.boneShards -= weaponShardCost;
-        player.weaponScroll -= weaponScrollCost
-        weaponScrollMultiplier *= 1.05;
-        scrollAdd = weaponScrollCost + 1 + weaponScrollMultiplier;
-        weaponScrollCost = Math.floor(scrollAdd);
-        weaponShardMultiplier *= 2;
-        shardAdd = weaponShardCost + weaponShardMultiplier;
-        weaponShardCost = shardAdd;
-        weapon.baseDamage += 5;
-        weapon.hitChance += 2;
-        weapon.critDamage += 0.1;
-        weapon.critChance += 0.5;
-        weapon.baseAttackSpeed -= 50;
-        setNewStats();
-        console.log("damage: ", weapon.baseDamage);
-        console.log("hit chance", weapon.hitChance);
-        console.log("crit chance", weapon.critChance);
-        console.log("scrollCost: ", weaponScrollCost);
-        console.log("shardCost: ", weaponShardCost);
-        loadHUD();
+function upgradeEquipment(item){
+    if (!item.isOwned) {
+        alert("You Do Not Own This Item");
+        return;
+    } 
+    
+    if (player.boneShards >= item.shardsNeededToUpgrade &&
+        item.scroll >= item.scrollsNeededToUpgrade){
+            player.boneShards -= item.shardsNeededToUpgrade;
+            item.scroll -= item.scrollsNeededToUpgrade;
+            item.level++;
+            item.shardsNeededToUpgrade = Math.floor(item.shardsNeededToUpgrade * 2.5);
+            item.scrollsNeededToUpgrade = Math.ceil((item.scrollsNeededToUpgrade * 1.4) + 5)
+        
     } else { 
-        alert("Nah");
+        alert("Not enough resources");
+    }  
+    
+    UpgradeStats(item);
+}
+
+
+function UpgradeStats(item) {
+    switch (item){
+        case weapon:
+            weapon.baseDamage += (weapon.baseDamage / 2);
+            weapon.hitChance += 4;
+            weapon.critDamage += 0.1;
+            weapon.critChance += 1;
+            weapon.baseAttackSpeed -= 100;
+            break;
     }
 }
+
+
+
 
