@@ -470,6 +470,7 @@ function randomEnemySelector(){
                       enemy.soulless.dragon.damage, enemy.soulless.dragon.attackSpeed, enemy.soulless.dragon.xp,
                       enemy.soulless.dragon.boneShards[Math.floor(Math.random() * enemy.soulless.dragon.boneShards.length)], enemy.soulless.dragon.dropTable);
     }
+    console.log("current enemy: ", currentEnemy);
 }
 
 randomEnemySelector();
@@ -484,6 +485,10 @@ function activateEnemy(name, hp, damage, attackSpeed, xp, boneShards, dropTable)
     activeEnemyDropTable = dropTable;
 }
 
-function resetEnemy(){
-    activateEnemy(null, null, null, null, null, null, null);
-}
+
+
+console.log(activeEnemyName);
+console.log(activeEnemyHp);
+console.log(activeEnemyDamage);
+console.log(activeEnemyXP);
+console.log(activeEnemyBoneShards);
