@@ -7,9 +7,9 @@ var weapon = { name: ["Empty","Wooden Dagger", "Bronze Dagger", "Bronze Sword", 
                       "Obsidian Sword", "Glass WarAxe", "Crystal Dagger", "Crystal Greatsword"],
                level: 1,
                scroll: 1,
-               baseDamage: 75, //15 default
+               baseDamage: 15, //15 default
                bonusDamage: 0,
-               hitChance: 80, //40 default
+               hitChance: 40, //40 default
                bonusHitChance: 0,
                critDamage: 1.2,
                critDamageBonus: 0,
