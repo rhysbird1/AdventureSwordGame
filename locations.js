@@ -108,9 +108,3 @@ area.Tsuksia =    { name:        "Tsuksia",
                     active:       false,
                     complete:     false
                   }
-
-
-
-//if (area.fyreVale.active == true){
-//    document.getElementById("body").style.backgroundColor = "red";
-//}
