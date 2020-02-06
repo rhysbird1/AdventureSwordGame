@@ -7,6 +7,7 @@
     <script src="locations.js"></script>
     <script src="enemies.js"></script>
     <script src="main.js"></script>
+    <script src="load-hud.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body onload="loadHUD()" id="body">
@@ -52,8 +53,8 @@
                         <td>&nbsp;<span id="armour"></span></td>
                         <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(armour)">&#8679;
                             <div class="tooltip-text">
-                                <p><span id="tpBsNeededArm"></span> Bone Shards</p>
-                                <p><span id="tpWsNeededArm"></span> Weapon Scrolls</p>
+                                <p><span id="ttBsNeededArm"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededArm"></span> Weapon Scrolls</p>
                                 <i></i>
                             </div>
                         </td>
@@ -61,42 +62,112 @@
                     <tr>
                         <td>&nbsp;Head</td>
                         <td>&nbsp;<span id="head"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(head)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededHead"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededHead"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Gloves</td>
                         <td>&nbsp;<span id="gloves"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(gloves)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededGloves"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededGloves"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Boots</td>
                         <td>&nbsp;<span id="boots"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(boots)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededBoots"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededBoots"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Ring 1</td>
                         <td>&nbsp;<span id="ring1"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(ring1)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededRing1"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededRing1"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Ring 2</td>
                         <td>&nbsp;<span id="ring2"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(ring2)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededRing2"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededRing2"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Ring 3</td>
                         <td>&nbsp;<span id="ring3"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(ring3)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededRing3"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededRing3"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Ring 4</td>
                         <td>&nbsp;<span id="ring4"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(ring4)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededRing4"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededRing4"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Belt</td>
                         <td>&nbsp;<span id="belt"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(belt)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededBelt"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededBelt"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Pocket</td>
                         <td>&nbsp;<span id="pocket"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(pocket)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededPocket"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededPocket"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;Aura</td>
                         <td>&nbsp;<span id="aura"></span></td>
+                        <td class="upgrade-arrow tooltip" onclick="upgradeEquipment(aura)">&#8679;
+                            <div class="tooltip-text">
+                                <p><span id="ttBsNeededAura"></span> Bone Shards</p>
+                                <p><span id="ttWsNeededAura"></span> Weapon Scrolls</p>
+                                <i></i>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
