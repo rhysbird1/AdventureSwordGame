@@ -7,9 +7,10 @@ var weapon = { name: ["Empty","Wooden Dagger", "Bronze Dagger", "Bronze Sword", 
                       "Obsidian Sword", "Glass WarAxe", "Crystal Dagger", "Crystal Greatsword"],
                level: 1,
                scroll: 1,
-               baseDamage: 15, //15 default
+               heldScrolls: 0,
+               baseDamage: 75, //15 default
                bonusDamage: 0,
-               hitChance: 40, //40 default
+               hitChance: 80, //40 default
                bonusHitChance: 0,
                critDamage: 1.2,
                critDamageBonus: 0,
@@ -26,6 +27,7 @@ var armour = { name: ["Empty", "Wooden Armour", "Rugged Leather", "Hard Leather"
                       "Iron Armour", "Steel Armour", "Mithril Armour", "Obisidian Armour", "Glass Armour", "Crystal Amour", "Elder Armour"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                baseHealth: 0,
                bonusHealth: 0,
                baseDodgeChance: 2,
@@ -40,12 +42,14 @@ var head =   { name: ["Empty", "Leaf Cowl", "Cloth Headwrap", "Turtle Shell", "W
                       ],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                isOwned: false,
              };
 
 var gloves = { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                hitChance: 0,
                isOwned: false,
              };
@@ -53,6 +57,7 @@ var gloves = { name: ["Empty"],
 var boots =  { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                dodgeChance: 0,
                isOwned: false,
              };
@@ -60,12 +65,14 @@ var boots =  { name: ["Empty"],
 var ring1 =  { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                isOwned: false,
              };
 
 var ring2 =  { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                xpBonus: 0,
                isOwned: false,
              };
@@ -73,18 +80,21 @@ var ring2 =  { name: ["Empty"],
 var ring3 =  { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                isOwned: false,
              };
 
 var ring4 =  { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                isOwned: false,
              };
 
 var belt =   { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                critChance: 0,
                critDamage: 0,
                isOwned: false,
@@ -93,6 +103,7 @@ var belt =   { name: ["Empty"],
 var pocket = { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                boneShardBonus: 0,
                isOwned: false,
              };
@@ -100,6 +111,7 @@ var pocket = { name: ["Empty"],
 var aura =   { name: ["Empty"],
                level: 0,
                scroll: 0,
+               heldScrolls: 0,
                isOwned: false,
              };
 
@@ -122,11 +134,11 @@ function upgradeEquipment(item){
         alert("Not enough resources");
     }  
     
-    UpgradeStats(item);
+    upgradeStats(item);
 }
 
 
-function UpgradeStats(item) {
+function upgradeStats(item) {
     switch (item){
         case weapon:
             weapon.baseDamage += (weapon.baseDamage / 2);
@@ -137,6 +149,8 @@ function UpgradeStats(item) {
             break;
     }
 }
+
+
 
 
 
