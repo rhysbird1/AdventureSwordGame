@@ -1,11 +1,13 @@
+/*eslint-env browser*/
+/*global weapon, armour, area*/
+/*eslint no-undef: "error"*/
 var game = {};
 var player = {};
 
 document.onmousedown = disableclick;
-status = "Right Click Disabled";
 function disableclick(event){ 
     if(event.button==2) {     
-        alert(status);     
+        alert("Right Click Disabled");     
         return false;       
     }
 }
@@ -22,100 +24,11 @@ player.currentRunLevel = 0;
 player.currentRunXP = 0;
 player.currentStage = area.fyreVale.currentStage;
 
-player.currRunWeaponScroll = 0;
-player.currRunArmourScroll = 0;
-player.currRunHeadScroll = 0;
-player.currRunGlovesScroll = 0;
-player.currRunBootsScroll = 0;
-player.currRunRing1Scroll = 0;
-player.currRunRing2Scroll = 0;
-player.currRunRing3Scroll = 0;
-player.currRunRing4Scroll = 0;
-player.currRunBeltScroll = 0;
-player.currRunPocketScroll = 0;
-player.currRunAuraScroll = 0;
-
-function loadHUD(){
-    document.getElementById("locAdj").innerHTML = currentLocAdj.toString();
-    document.getElementById("locNoun").innerHTML = currentLocNoun.toString();
-    document.getElementById("area").innerHTML = area.fyreVale.name;
-    document.getElementById("currentStage").innerHTML = player.currentStage;
-    document.getElementById("totalStages").innerHTML = area.fyreVale.totalStages;
-    document.getElementById("bestStage").innerHTML = bestStageArr.slice(0);
-    document.getElementById("currentBoneShards").innerHTML = player.boneShards;
-    document.getElementById("currentPlayerHealth").innerHTML = player.currentHealth;
-    document.getElementById("maxPlayerHealth").innerHTML = player.baseHealth;
-    document.getElementById("weapon").innerHTML = weapon.name[weapon.level];
-    document.getElementById("armour").innerHTML = armour.name[armour.level];
-    document.getElementById("head").innerHTML = head.name[head.level];
-    document.getElementById("gloves").innerHTML = gloves.name[gloves.level];
-    document.getElementById("boots").innerHTML = boots.name[boots.level];
-    document.getElementById("ring1").innerHTML = ring1.name[ring1.level];
-    document.getElementById("ring2").innerHTML = ring2.name[ring2.level];
-    document.getElementById("ring3").innerHTML = ring3.name[ring3.level];
-    document.getElementById("ring4").innerHTML = ring4.name[ring4.level];
-    document.getElementById("belt").innerHTML = belt.name[belt.level];
-    document.getElementById("pocket").innerHTML = pocket.name[pocket.level];
-    document.getElementById("aura").innerHTML = aura.name[aura.level];
-    document.getElementById("currentRunLevel").innerHTML = player.currentRunLevel;
-    
-    document.getElementById("weaponScroll").innerHTML = weapon.scroll;
-    document.getElementById("armourScroll").innerHTML = armour.scroll;
-    document.getElementById("headScroll").innerHTML = head.scroll;
-    document.getElementById("glovesScroll").innerHTML = gloves.scroll;
-    document.getElementById("bootsScroll").innerHTML = boots.scroll;
-    document.getElementById("ring1Scroll").innerHTML = ring1.scroll;
-    document.getElementById("ring2Scroll").innerHTML = ring2.scroll;
-    document.getElementById("ring3Scroll").innerHTML = ring3.scroll;
-    document.getElementById("ring4Scroll").innerHTML = ring4.scroll;
-    document.getElementById("beltScroll").innerHTML = belt.scroll;
-    document.getElementById("pocketScroll").innerHTML = pocket.scroll;
-    document.getElementById("auraScroll").innerHTML = aura.scroll;
-    
-    //TODO make this a loop so as to not have massive lines of code
-    document.getElementById("ttBsNeededWep").innerHTML = weapon.shardsNeededToUpgrade;
-    document.getElementById("ttWsNeededWep").innerHTML = weapon.scrollsNeededToUpgrade;
-    
-    document.getElementById("currentEnemyName").innerHTML = activeEnemyName;
-    
-//    var element = document.getElementById("weapon");
-//    element.classList.add("tooltip");
-//    var node = document.createElement("div");
-//    node.setAttribute("class", "tooltip-text");
-//    var text = "Hello";
-//    var textnode = document.createTextNode(text);
-//    node.appendChild(textnode);
-//    document.getElementById("weapon").appendChild(node);
-       
-}
-
 var bestStageArr = [];
 
 function pushBestStage(){
     if (!bestStageArr.include(player.currentStage)){
         bestStageArr.push(player.currentStage)
-    }
-}
-
-function addEnemiesToPool(){
-    switch (player.currentStage){
-        case 9:
-            enemyArray.push(6, 11);
-            break;
-        case 14:
-            enemyArray.push(5, 12);
-            break;
-        case 19:
-            enemyArray.push(7, 13);
-            break;
-        case 29:
-            enemyArray.push(14);
-            break;
-        case 39:
-            enemyArray.push(8);
-            break;
-        case 44:
-            enemyArray.push(15);       
     }
 }
 
@@ -135,13 +48,13 @@ function startCombat(){
     var startPlayerAttack = setInterval(startPlayerAttack, player.attackSpeed);
 
     function startPlayerAttack(){
-        const maxEnemyHP = activeEnemyHp;
+        maxEnemyHP = activeEnemyHp;
         var hit = [Math.floor(Math.random() * 100)];
         if (hit >= player.hitChance){
             currentEnemyHP += player.damage;
-            CombatLogListAppend(gameLogText.playerMissed);
+            combatLogListAppend(gameLogText.playerMissed);
         } else {
-            CombatLogListAppend(gameLogText.playerDamage);
+            combatLogListAppend(gameLogText.playerDamage);
         }
         currentEnemyHP -= player.damage;
         enemyHpPercent = (currentEnemyHP / maxEnemyHP) * 100;
@@ -168,9 +81,9 @@ function startCombat(){
         var dodge = [Math.floor(Math.random() * 100)];
         if (dodge <= player.dodgeChance){
             player.currentHealth += activeEnemyDamage;
-            CombatLogListAppend(gameLogText.playerDodged);
+            combatLogListAppend(gameLogText.playerDodged);
         } else {
-            CombatLogListAppend(gameLogText.enemyDamage);
+            combatLogListAppend(gameLogText.enemyDamage);
         }
         player.currentHealth -= activeEnemyDamage;
         document.getElementById("currentPlayerHealth").innerHTML = player.currentHealth;
@@ -184,7 +97,7 @@ function startCombat(){
             //document.getElementById("overlay").style.display = "block";
             
             document.getElementById("startCombat").style.display = "block";
-            removeText();
+            removeLogText();
             collectStoredCurrency();
             resetPlayerStats();
         }
@@ -193,18 +106,18 @@ function startCombat(){
 
 function collectStoredCurrency(){
     player.boneShards += player.storedBoneShards;
-    weapon.scroll += player.currRunWeaponScroll;
-    armour.scroll += player.currRunArmourScroll;
-    head.scroll += player.currRunHeadScroll;
-    gloves.scroll += player.currRunGlovesScroll;
-    boots.scroll += player.currRunBootsScroll;
-    ring1.scroll += player.currRunRing1Scroll;
-    ring2.scroll += player.currRunRing2Scroll;
-    ring3.scroll += player.currRunRing3Scroll;
-    ring4.scroll += player.currRunRing4Scroll;
-    belt.scroll += player.currRunBeltScroll;
-    pocket.scroll += player.currRunPocketScroll;
-    aura.scroll += player.currRunAuraScroll;
+    weapon.scroll     += weapon.heldScrolls;
+    armour.scroll     += armour.heldScrolls;
+    head.scroll       += head.heldScrolls;
+    gloves.scroll     += gloves.heldScrolls;
+    boots.scroll      += boots.heldScrolls;
+    ring1.scroll      += ring1.heldScrolls;
+    ring2.scroll      += ring2.heldScrolls;
+    ring3.scroll      += ring3.heldScrolls;
+    ring4.scroll      += ring4.heldScrolls;
+    belt.scroll       += belt.heldScrolls;
+    pocket.scroll     += pocket.heldScrolls;
+    aura.scroll       += aura.heldScrolls;
 }
 
 var baseXP = 25;
@@ -227,10 +140,10 @@ function xpGains(){
 }
 
 function enemyLoot(){
-    BoneShardsLoot();
-    RareDropTable();
-    EquipmentDrops();
-    ScrollLoot();
+    boneShardLoot();
+    rareDropTable();
+    equipmentLoot();
+    scrollLoot();
 }
 
 var dropTableOneChance = 750;
@@ -242,9 +155,9 @@ var dropTableOneItems = [1, 2, 3, 4, 5, 6, 7];
 var dropTableTwoItems = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var equipmentOwnedArr = ["weapon"];
 var equipmentNOTOwnedArr = ["armour", "head", "gloves", "boots", "ring1", "ring2",                                                 "ring3", "ring4", "belt", "pocket", "aura"];
-var equipmentDropChance = 2; //increases with each drop. 150 default
+var equipmentDropChance = 2; //increases with each drop. 50 default
 
-function RareDropTable() {
+function rareDropTable() {
     selectDropTable = activeEnemyDropTable[Math.floor(Math.random() * activeEnemyDropTable.length)];
     if (selectDropTable == 1){
         itemChance = Math.floor(Math.random() * dropTableOneChance + 1);
@@ -252,35 +165,48 @@ function RareDropTable() {
             itemFound = dropTableOneItems[Math.floor(Math.random() * dropTableOneItems.length)];
             switch (itemFound){
                 case 1:
-                    console.log("You found something!")
+                    console.log("You found something!");
                     break;
             }
         }
     }
 }
 
-function BoneShardsLoot() {
+function boneShardLoot() {
     player.storedBoneShards += activeEnemyBoneShards;
-    CombatLogListAppend("You found " + activeEnemyBoneShards + " Bone Shards");
+    combatLogListAppend("You found " + activeEnemyBoneShards + " Bone Shards");
 }
 
-function ScrollLoot( ){
+function scrollLoot( ){
     scrollDropRand = Math.floor(Math.random() * scrollDropChance);
     if (scrollDropRand == 1) {
         randomEquipScroll = Math.floor(Math.random() * equipmentOwnedArr.length);
         console.log("You got a scroll");
         switch (randomEquipScroll) {
-            case 0:
-                weaponMin = weapon.level * 2;
-                weaponMax = weapon.level * 4;
-                var weaponScrollsDropped = randNumGenMinMax(weaponMin, weaponMax);
-                player.currRunWeaponScroll += weaponScrollsDropped;
-                break;
+            case 0:  gainRandomEquipScrolls(weapon); break;
+            case 1:  gainRandomEquipScrolls(armour); break;
+            case 2:  gainRandomEquipScrolls(head);   break;
+            case 3:  gainRandomEquipScrolls(gloves); break;
+            case 4:  gainRandomEquipScrolls(boots);  break;
+            case 5:  gainRandomEquipScrolls(ring1);  break;
+            case 6:  gainRandomEquipScrolls(ring2);  break;
+            case 7:  gainRandomEquipScrolls(ring3);  break;
+            case 8:  gainRandomEquipScrolls(ring4);  break;
+            case 9:  gainRandomEquipScrolls(belt);   break;
+            case 10: gainRandomEquipScrolls(pocket); break;
+            case 11: gainRandomEquipScrolls(aura);   break;
         }
     }
 }
 
-function EquipmentDrops() {
+function gainRandomEquipScrolls(item){
+    min = item.level * 2;
+    max = item.level * 4;
+    var scrollsDropped = RNGMinMax(min, max);
+    item.heldScrolls += scrollsDropped;
+}
+
+function equipmentLoot() {
     equipmentChance = Math.floor(Math.random() * equipmentDropChance);
     if (equipmentChance == 1){
         gainEquipIfNotOwned(equipmentNOTOwnedArr.slice(0,1));
@@ -294,6 +220,8 @@ function gainEquipIfNotOwned(equip) {
         equipmentNOTOwnedArr.shift();
         if (equip == "armour"){
             armour.isOwned = true;
+            armour.level = 1;
+            combatLogListAppend("You found some Armour!");
         }
         //equipmentDropChance += 100;
     }
@@ -308,17 +236,18 @@ function resetPlayerStats() {
     player.currentRunLevel = 0;
     player.currentRunXP = 0;
     player.currentStage = 1;
-    player.currRunArmourScroll = 0;
-    player.currRunHeadScroll = 0;
-    player.currRunGlovesScroll = 0;
-    player.currRunBootsScroll = 0;
-    player.currRunRing1Scroll = 0;
-    player.currRunRing2Scroll = 0;
-    player.currRunRing3Scroll = 0;
-    player.currRunRing4Scroll = 0;
-    player.currRunBeltScroll = 0;
-    player.currRunPocketScroll = 0;
-    player.currRunAuraScroll = 0;
+    weapon.heldScrolls = 0;
+    armour.heldScrolls = 0;
+    head.heldScrolls = 0;
+    gloves.heldScrolls = 0;
+    boots.heldScrolls = 0;
+    ring1.heldScrolls = 0;
+    ring2.heldScrolls = 0;
+    ring3.heldScrolls = 0;
+    ring4.heldScrolls = 0;
+    belt.heldScrolls = 0;
+    pocket.heldScrolls = 0;
+    aura.heldScrolls = 0;
     document.getElementById("xpBar").style.width = "0%";
 }
 
@@ -329,32 +258,32 @@ var gameLogText = {
     enemyDamage: "Enemy > Dealt " + activeEnemyDamage + " Damage",
 }
 
-function CombatLogListAppend(text){
+function combatLogListAppend(text){
     var node = document.createElement("LI");
-    
-    if (text === gameLogText.playerDodged){
-        node.setAttribute("style", "color:#0092e0;");
-    } 
-    
-    if (text === gameLogText.playerDamage){
-        node.setAttribute("style", "color:green;");
-    }
-    
-    if (text === gameLogText.enemyDamage){
-        node.setAttribute("style", "color:red;");
-    }
-        
+    changeLogTextStyle(text, node);    
     var textnode = document.createTextNode(text);
     node.appendChild(textnode);
     var combatLog = document.getElementById("combatLog");
     combatLog.insertBefore(node, combatLog.childNodes[0]);
 }
 
-function removeText(){
+function changeLogTextStyle(text, node) {
+    if (text === gameLogText.playerDodged){
+        node.setAttribute("style", "color:#0092e0;");
+    } 
+    if (text === gameLogText.playerDamage){
+        node.setAttribute("style", "color:green;");
+    }
+    if (text === gameLogText.enemyDamage){
+        node.setAttribute("style", "color:red;");
+    }
+}
+
+function removeLogText(){
     document.getElementById("combatLog").innerHTML = "";
 }
 
-function randNumGenMinMax(min, max){
+function RNGMinMax(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
