@@ -485,6 +485,27 @@ function activateEnemy(name, hp, damage, attackSpeed, xp, boneShards, dropTable)
     activeEnemyDropTable = dropTable;
 }
 
+function addEnemiesToPool(){
+    switch (player.currentStage){
+        case 9:
+            enemyArray.push(6, 11);
+            break;
+        case 14:
+            enemyArray.push(5, 12);
+            break;
+        case 19:
+            enemyArray.push(7, 13);
+            break;
+        case 29:
+            enemyArray.push(14);
+            break;
+        case 39:
+            enemyArray.push(8);
+            break;
+        case 44:
+            enemyArray.push(15);       
+    }
+}
 
 
 console.log(activeEnemyName);
