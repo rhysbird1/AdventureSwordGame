@@ -1,8 +1,23 @@
 /*eslint-env browser*/
 /*global weapon, armour, area*/
 /*eslint no-undef: "error"*/
+
+//TODO rename implicit function names
+
 var game = {};
 var player = {};
+
+function saveGame(){
+    localStorage.setItem("boneShards", player.boneShards);
+}
+
+function loadSave(){
+    player.boneShards = localStorage.getItem("boneShards");
+}
+
+function deleteSave(){
+    localStorage.clear();
+}
 
 document.onmousedown = disableclick;
 function disableclick(event){ 
@@ -12,13 +27,12 @@ function disableclick(event){
     }
 }
 
-player.baseHealth = 400; //400 default
-player.maxHealth = player.baseHealth + armour.baseHealth + armour.bonusHealth;
+player.maxHealth = Math.round(armour.baseHealth + armour.bonusHealth + head.baseHealth);
 player.currentHealth = player.maxHealth;
-player.attackSpeed = weapon.baseAttackSpeed + weapon.bonusAttackSpeed;
 player.hitChance = weapon.hitChance + weapon.bonusHitChance;
-player.dodgeChance = armour.baseDodgeChance + armour.bonusDodgeChance;
-player.boneShards = 5;
+player.damageReduction = armour.damageReduction + armour.bonusDamageReduction + 
+                         head.damageReduction + head.bonusDamageReduction;
+player.boneShards = 0;
 player.storedBoneShards = 0;
 player.currentRunLevel = 0;
 player.currentRunXP = 0;
@@ -32,92 +46,151 @@ function pushBestStage(){
     }
 }
 
+function increment(n){
+    n++;
+    return n;
+}
+
 var startEnemyAttack;
 var startPlayerAttack;
+var isLevellingUp = false;
+var isPlaying = false;
 
 function initialiseEnemy(){
     document.getElementById("enemyHealth").style.width = "100%";
     currentEnemyHP = activeEnemyHp;
 }
 
+//TODO refactor startCombat, startPlayerAttack & startEnemyAttack
+
 function startCombat(){
+    isPlaying = true;
     player.damage = Math.round(weapon.baseDamage + weapon.bonusDamage);
     document.getElementById("startCombat").style.display = "none";
     currentEnemyHP = activeEnemyHp;
-    var startEnemyAttack = setInterval(startEnemyAttack, activeEnemyAttackSpeed);
-    var startPlayerAttack = setInterval(startPlayerAttack, player.attackSpeed);
+    startEnemyAttack = setInterval(startEnemyAttack, activeEnemyAttackSpeed);
+    startPlayerAttack = setInterval(startPlayerAttack, player.attackSpeed);
 
     function startPlayerAttack(){
         maxEnemyHP = activeEnemyHp;
-        var hit = [Math.floor(Math.random() * 100)];
-        if (hit >= player.hitChance){
-            currentEnemyHP += player.damage;
-            combatLogListAppend(gameLogText.playerMissed);
-        } else {
-            combatLogListAppend(gameLogText.playerDamage);
-        }
+        hitChanceHandler();
         currentEnemyHP -= player.damage;
         enemyHpPercent = (currentEnemyHP / maxEnemyHP) * 100;
         document.getElementById("enemyHealth").style.width = enemyHpPercent + "%";
         
-            // Enemy Dead =================================================
-            if (currentEnemyHP <= 0) {
-                document.getElementById("enemyHealth").style.width = "0%";
-                clearInterval(startEnemyAttack);
-                clearInterval(startPlayerAttack);
-                player.currentStage++;
-                randomEnemySelector();
-                xpGains();
-                enemyLoot();
-                addEnemiesToPool();
-                setTimeout(function(){
-                    initialiseEnemy();
-                    startCombat();
-                },1500)
-            }
-    }
-    
-    function startEnemyAttack(){
-        var dodge = [Math.floor(Math.random() * 100)];
-        if (dodge <= player.dodgeChance){
-            player.currentHealth += activeEnemyDamage;
-            combatLogListAppend(gameLogText.playerDodged);
-        } else {
-            combatLogListAppend(gameLogText.enemyDamage);
+        // Enemy Dead =================================================
+        if (currentEnemyHP <= 0) {
+            document.getElementById("enemyHealth").style.width = "0%";
+            clearInterval(startEnemyAttack);
+            clearInterval(startPlayerAttack);
+            defeatedEnemyHandler();
+            player.currentStage = increment(player.currentStage);
+            levellingUpHandler();
         }
+    }  
+    function startEnemyAttack(){
+        dodgeChanceHandler();
         player.currentHealth -= activeEnemyDamage;
         document.getElementById("currentPlayerHealth").innerHTML = player.currentHealth;
         
         // Player dead ===================================================
         if (player.currentHealth <= 0){
+            player.currentHealth = 0;
             clearInterval(startEnemyAttack);
             clearInterval(startPlayerAttack);
-            player.currentHealth = player.maxHealth;
-            
-            //document.getElementById("overlay").style.display = "block";
-            
-            document.getElementById("startCombat").style.display = "block";
-            removeLogText();
-            collectStoredCurrency();
-            resetPlayerStats();
+            deathScreen();
+            setTimeout(function(){
+                player.currentHealth = player.maxHealth;                    
+                document.getElementById("startCombat").style.display = "block";
+                document.getElementById("enemyHealth").style.width = "100%";
+                removeLogText();
+                collectStoredCurrency();
+                resetPlayerStats();
+                isPlaying = false;
+            },5000);
         }
     }
 }
 
+function hitChanceHandler(){
+    var hit = [Math.floor(Math.random() * 100)];
+    if (hit >= player.hitChance){
+        currentEnemyHP += player.damage;
+        combatLogListAppend(gameLogText.playerMissed);
+    } else {
+        combatLogListAppend(gameLogText.playerDamage);
+    }
+}
+
+function dodgeChanceHandler(){
+    var dodge = [Math.floor(Math.random() * 100)];
+    if (dodge <= player.dodgeChance){
+        player.currentHealth += activeEnemyDamage;
+        combatLogListAppend(gameLogText.playerDodged);
+    } else {
+        combatLogListAppend(gameLogText.enemyDamage);
+    }
+}
+
+function levellingUpHandler(){
+if (isLevellingUp == true) {
+        levelUp();
+    } else {
+        setTimeout(function(){
+            initialiseEnemy();
+            startCombat();
+        },1500)
+    }
+}
+
+function defeatedEnemyHandler(){
+    randomEnemySelector();
+    xpGains();
+    enemyLoot();
+    addEnemiesToPool();
+    changeLocation();
+}
+
+function clearAllCombatIntervals(){
+    clearInterval(startEnemyAttack);
+    clearInterval(startPlayerAttack);
+}
+
+function deathScreen(){
+    var element = document.getElementById("deathScreen");
+    element.classList.add("death-screen");
+    element.classList.add("fadeIn");
+    setTimeout(function(){
+        element.classList.remove("fadeIn");
+        element.classList.add("fadeOut");
+    }, 5000);
+    setTimeout(function(){
+        element.classList.remove("death-screen");
+        element.classList.remove("fadeOut");
+    }, 8300);  
+}
+
+function levelUp(){
+    document.getElementById("xpBar").style.width = "0%";
+    clearInterval(startEnemyAttack);
+    clearInterval(startPlayerAttack);
+    overlayHandler();
+}
+
 function collectStoredCurrency(){
-    player.boneShards += player.storedBoneShards;
-    weapon.scroll     += weapon.heldScrolls;
-    armour.scroll     += armour.heldScrolls;
-    head.scroll       += head.heldScrolls;
-    gloves.scroll     += gloves.heldScrolls;
-    boots.scroll      += boots.heldScrolls;
-    ring1.scroll      += ring1.heldScrolls;
-    ring2.scroll      += ring2.heldScrolls;
-    ring3.scroll      += ring3.heldScrolls;
-    ring4.scroll      += ring4.heldScrolls;
-    belt.scroll       += belt.heldScrolls;
-    pocket.scroll     += pocket.heldScrolls;
-    aura.scroll       += aura.heldScrolls;
+    player.boneShards +=  player.storedBoneShards;
+    weapon.scroll     +=       weapon.heldScrolls;
+    armour.scroll     +=       armour.heldScrolls;
+    head.scroll       +=         head.heldScrolls;
+    gloves.scroll     +=       gloves.heldScrolls;
+    boots.scroll      +=        boots.heldScrolls;
+    ring1.scroll      +=        ring1.heldScrolls;
+    ring2.scroll      +=        ring2.heldScrolls;
+    ring3.scroll      +=        ring3.heldScrolls;
+    ring4.scroll      +=        ring4.heldScrolls;
+    belt.scroll       +=         belt.heldScrolls;
+    pocket.scroll     +=       pocket.heldScrolls;
+    aura.scroll       +=         aura.heldScrolls;
 }
 
 var baseXP = 25;
@@ -129,13 +202,13 @@ function xpGains(){
     document.getElementById("xpBar").style.width = currentXpPercent + "%";
     console.log("XP: ", player.currentRunXP);
     if (player.currentRunXP >= baseXP){
+        isLevellingUp = true;
         xpCalc += Math.floor(player.currentRunLevel + 200 * Math.pow(2, player.currentRunLevel / 7.))
         baseXP = Math.floor(xpCalc / 4);
         player.currentRunXP = 0;
-        player.currentRunLevel++;
+        player.currentRunLevel = increment(player.currentRunLevel);
         document.getElementById("currentRunLevel").innerHTML = player.currentRunLevel;
         document.getElementById("xpBar").style.width = "100%";
-        console.log("baseXP: ", baseXP);
     }
 }
 
@@ -150,14 +223,14 @@ var dropTableOneChance = 750;
 var dropTableTwoChance = 2000;
 var dropTableThreeChance = 7500;
 var dropTableFourChance = 16000;
-var scrollDropChance = 2;  //250 default
+var scrollDropChance = 250;  //250 default
 var dropTableOneItems = [1, 2, 3, 4, 5, 6, 7];
 var dropTableTwoItems = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var equipmentOwnedArr = ["weapon"];
 var equipmentNOTOwnedArr = ["armour", "head", "gloves", "boots", "ring1", "ring2",                                                 "ring3", "ring4", "belt", "pocket", "aura"];
-var equipmentDropChance = 2; //increases with each drop. 50 default
+var equipmentDropChance = 50; //increases with each drop. 50 default
 
-function rareDropTable() {
+function rareDropTable(){
     selectDropTable = activeEnemyDropTable[Math.floor(Math.random() * activeEnemyDropTable.length)];
     if (selectDropTable == 1){
         itemChance = Math.floor(Math.random() * dropTableOneChance + 1);
@@ -172,7 +245,7 @@ function rareDropTable() {
     }
 }
 
-function boneShardLoot() {
+function boneShardLoot(){
     player.storedBoneShards += activeEnemyBoneShards;
     combatLogListAppend("You found " + activeEnemyBoneShards + " Bone Shards");
 }
@@ -184,7 +257,8 @@ function scrollLoot( ){
         console.log("You got a scroll");
         switch (randomEquipScroll) {
             case 0:  gainRandomEquipScrolls(weapon); break;
-            case 1:  gainRandomEquipScrolls(armour); break;
+            case 1:  gainRandomEquipScrolls(armour);
+                     armour.baseHealth += 200; break;
             case 2:  gainRandomEquipScrolls(head);   break;
             case 3:  gainRandomEquipScrolls(gloves); break;
             case 4:  gainRandomEquipScrolls(boots);  break;
@@ -206,32 +280,45 @@ function gainRandomEquipScrolls(item){
     item.heldScrolls += scrollsDropped;
 }
 
-function equipmentLoot() {
+function equipmentLoot(){
     equipmentChance = Math.floor(Math.random() * equipmentDropChance);
     if (equipmentChance == 1){
         gainEquipIfNotOwned(equipmentNOTOwnedArr.slice(0,1));
     }
 } 
 
-function gainEquipIfNotOwned(equip) {
+function gainEquipIfNotOwned(equip){
     console.log(equip);
     if (!isEquipOwned(equip)) {
         equipmentOwnedArr.push(equip);
         equipmentNOTOwnedArr.shift();
-        if (equip == "armour"){
-            armour.isOwned = true;
-            armour.level = 1;
-            combatLogListAppend("You found some Armour!");
-        }
-        //equipmentDropChance += 100;
+        combatLogListAppend("You found: " + equip);
+        //TODO refactor
+        if (equip == "armour")      { changeEquipStatus(armour); } 
+        else if (equip == "head")   { changeEquipStatus(head); } 
+        else if (equip == "gloves") { changeEquipStatus(gloves); }
+        else if (equip == "boots")  { changeEquipStatus(boots); }
+        else if (equip == "ring1")  { changeEquipStatus(ring1); }
+        else if (equip == "ring2")  { changeEquipStatus(ring2); }
+        else if (equip == "ring3")  { changeEquipStatus(ring3); }
+        else if (equip == "ring4")  { changeEquipStatus(ring4); }
+        else if (equip == "belt")   { changeEquipStatus(belt); }
+        else if (equip == "pocket") { changeEquipStatus(pocket); }
+        else if (equip == "aura")   { changeEquipStatus(aura); }
+        equipmentDropChance += 100;   
     }
 }
 
-function isEquipOwned(item) {
+function changeEquipStatus(item){
+    item.isOwned = true;
+    item.level = 1;
+}
+
+function isEquipOwned(item){
     return item.isOwned;
 }
 
-function resetPlayerStats() {
+function resetPlayerStats(){
     player.storedBoneShards = 0;
     player.currentRunLevel = 0;
     player.currentRunXP = 0;
@@ -267,7 +354,7 @@ function combatLogListAppend(text){
     combatLog.insertBefore(node, combatLog.childNodes[0]);
 }
 
-function changeLogTextStyle(text, node) {
+function changeLogTextStyle(text, node){
     if (text === gameLogText.playerDodged){
         node.setAttribute("style", "color:#0092e0;");
     } 
@@ -286,6 +373,89 @@ function removeLogText(){
 function RNGMinMax(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function skillCardSelect(){
+    isLevellingUp = false;
+    var overlayFade = document.getElementById("overlay");
+    overlayFade.style.opacity = "0";
+//    if (num == 1){
+//        //statement
+//    }
+    initialiseEnemy();
+    setTimeout(function(){
+        startCombat();
+    },500);
+}
+
+function overlayHandler(){
+    var overlay = document.getElementById("overlay");
+    overlay.style.display = "block";
+    generateSkillCard(skills[0].url, skillImgElementIds[0]);
+    console.log(skills[0].url, skillImgElementIds[0]);
+}
+
+function generateSkillCard(url, eleId){
+    var imgNode = document.createElement("IMG");
+    imgNode.setAttribute("src", url);
+    imgNode.setAttribute("width", "333");
+    imgNode.setAttribute("height", "333");
+    document.getElementById(eleId).appendChild(imgNode);
+}
+
+function addSkillCardClickEvent(){
+    
+}
+
+//========================================= TESTING ====================================
+
+//Element.prototype.setAttributes = function (attrs) {
+//    for (var idx in attrs) {
+//        if ((idx == 'styles' || idx == 'style') && typeof attrs[idx] == 'object') {
+//            for (var prop in attrs[idx]){this.style[prop] = attrs[idx][prop]}
+//        } else if (idx == 'html') {
+//            this.innerHTML = attrs[idx]
+//        } else {
+//            this.setAttribute(idx, attrs[idx]);
+//        }
+//    }
+//};
+//
+//var d = document.createElement('div');
+//d.setAttributes({
+//    'id':'myDiv',
+//    'class':'my-class',
+//    'styles':{
+//        'backgroundColor':'blue',
+//        'color':'red'
+//    },
+//    'html':'lol'
+//});
+
+const skills = [
+    {
+        name: "Damage Boost",
+        desc: "Increase damage by ", //+ var + "%"
+        url: "../images/Dmg%20Boost.png",
+    },
+    {
+        name: "Max Health Boost",
+        desc: "...",
+        url: "../images/Max%20Health%20Boost.png",
+    },
+    {
+        name: "Attack Speed Boost",
+        desc: "...",
+        url: "../images/attack%20speed.png",
+    },
+]
+
+console.log(skills[0].url);
+
+const skillImgElementIds = [
+    "skillIcon1",
+    "skillIcon2",
+    "skillIcon3"
+];
 
 setInterval(function(){
     loadHUD()
