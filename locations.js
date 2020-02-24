@@ -25,6 +25,11 @@ var area = ["Fyrevale", "Gurok", "Perillith", "Ard", "Newshire", "Gondol Meadows
 var currentLocAdj = locAdj[Math.floor(Math.random() * locAdj.length)];
 var currentLocNoun = locNoun[Math.floor(Math.random() * locNoun.length)];
 
+function changeLocation(){
+    currentLocAdj = locAdj[Math.floor(Math.random() * locAdj.length)];
+    currentLocNoun = locNoun[Math.floor(Math.random() * locNoun.length)];
+}
+
 area.fyreVale =   { name:        "FyreVale", 
                     totalStages:  50,
                     currentStage: 1,
