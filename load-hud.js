@@ -6,9 +6,9 @@ function loadHUD(){
     document.getElementById("currentStage").innerHTML = player.currentStage;
     document.getElementById("totalStages").innerHTML = area.fyreVale.totalStages;
     document.getElementById("bestStage").innerHTML = bestStageArr.slice(0);
-    document.getElementById("currentBoneShards").innerHTML = player.boneShards;
-    document.getElementById("currentPlayerHealth").innerHTML = player.currentHealth;
-    document.getElementById("maxPlayerHealth").innerHTML = player.baseHealth;
+    document.getElementById("currentBoneShards").innerHTML = player.boneShards.toLocaleString();
+    document.getElementById("currentPlayerHealth").innerHTML = player.currentHealth.toLocaleString();
+    document.getElementById("maxPlayerHealth").innerHTML = player.maxHealth.toLocaleString();
     document.getElementById("weapon").innerHTML = weapon.name[weapon.level];
     document.getElementById("armour").innerHTML = armour.name[armour.level];
     document.getElementById("head").innerHTML = head.name[head.level];
@@ -40,5 +40,9 @@ function loadHUD(){
     document.getElementById("ttBsNeededWep").innerHTML = weapon.shardsNeededToUpgrade;
     document.getElementById("ttWsNeededWep").innerHTML = weapon.scrollsNeededToUpgrade;
     
-    document.getElementById("currentEnemyName").innerHTML = activeEnemyName;      
+    document.getElementById("currentEnemyName").innerHTML = activeEnemyName;
+    
+    player.maxHealth = Math.round(armour.baseHealth + armour.bonusHealth + head.baseHealth);
+    player.dodgeChance = armour.baseDodgeChance + armour.bonusDodgeChance + boots.dodgeChance;
+    player.attackSpeed = weapon.baseAttackSpeed + weapon.bonusAttackSpeed;
 }
