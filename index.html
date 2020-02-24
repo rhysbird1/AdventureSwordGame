@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Adventure Sword Game - 0.1.9.0</title>
+    <title>Adventure Sword Game - 0.1.10.0</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="equipment.js"></script>
     <script src="locations.js"></script>
     <script src="enemies.js"></script>
     <script src="main.js"></script>
     <script src="load-hud.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Jim+Nightshade&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body onload="loadHUD()" id="body">
+<body onload="loadHUD(); loadSave();" id="body">
     <div class="current-location">
-        <span id="area"></span>
+        <div>
+            <input type="button" class="save-game" value="&#128190;" onclick="saveGame()">
+            <input type="button" value="X" onclick="deleteSave()">
+        </div>
+        <span id="area" class="area"></span>
         <br>
         <span id="locAdj"></span>
         <span id="locNoun"></span>
@@ -25,6 +32,7 @@
     </div>
     <div class="hud-left">
         <div id="playerHealth" class="hud-box">
+        <div id="playerHealthBar"></div>
             Health
             <span id="currentPlayerHealth"></span> /
             <span id="maxPlayerHealth"></span>
@@ -231,6 +239,21 @@
         <div id="startCombat">
             <input type="button" class="hud-box startCombatBtn" value="Fight" onclick="startCombat()">
         </div>
+        <div class="card-holder">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="../images/Dmg%20Boost.png" width="150" height="150">
+                        </td>
+                        <td>
+                            <img src="../images/Max%20Health%20Boost.png" width="150" height="150">
+                        </td>
+                        <td>Icon</td>
+                     </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="hud-right">
         <div class="hud-box combat-log">
@@ -240,7 +263,31 @@
         <div id="combatLog"></div>
     </div>
     <div id="overlay">
-        <div id="overlayText">You Died (Test Overlay)</div>
+        <div class="card-container">
+            <div class="title hud-box">Level Up!</div>
+            <div class="skill-card hud-box" id="skillCardOne" onclick="skillCardSelect('dmgBoost')">
+                <div class="title">Damage Boost</div>
+                <div class="skill-icon" id="skillIcon1">
+<!--                    <img src="../images/Dmg%20Boost.png" width="333" height="333">-->
+                </div>
+                <div class="info">Increase damage by 25%</div>
+            </div>
+            <div class="skill-card hud-box" id="skillCardTwo" onclick="skillCardSelect(2)">
+                <div class="title">Max Health Boost</div>
+                <div class="skill-icon" id="skillIcon2">
+                    <img src="../images/Max%20Health%20Boost.png" width="333" height="333">
+                </div>
+                <div class="info">Skill explanation</div>
+            </div>
+            <div class="skill-card hud-box" id="skillCardThree" onclick="skillCardSelect(3)">
+                <div class="title">Attack Speed Boost</div>
+                <div class="skill-icon" id="skillIcon3">
+                    <img src="../images/attack%20speed.png" width="333" height="333">
+                </div>
+                <div class="info">Skill explanation</div>
+            </div>
+        </div>
     </div>
+    <div id="deathScreen"><p>You Died</p></div>
 </body>
 </html>
