@@ -77,36 +77,23 @@ function startCombat(){
         currentEnemyHP -= player.damage;
         enemyHpPercent = (currentEnemyHP / maxEnemyHP) * 100;
         document.getElementById("enemyHealth").style.width = enemyHpPercent + "%";
-        
-        // Enemy Dead =================================================
         if (currentEnemyHP <= 0) {
-            document.getElementById("enemyHealth").style.width = "0%";
             clearInterval(startEnemyAttack);
             clearInterval(startPlayerAttack);
             defeatedEnemyHandler();
-            player.currentStage = increment(player.currentStage);
-            levellingUpHandler();
         }
     }  
     function startEnemyAttack(){
         dodgeChanceHandler();
         player.currentHealth -= activeEnemyDamage;
         document.getElementById("currentPlayerHealth").innerHTML = player.currentHealth;
-        
-        // Player dead ===================================================
         if (player.currentHealth <= 0){
             player.currentHealth = 0;
             clearInterval(startEnemyAttack);
             clearInterval(startPlayerAttack);
-            deathScreen();
+            animateDeathScreen();
             setTimeout(function(){
-                player.currentHealth = player.maxHealth;                    
-                document.getElementById("startCombat").style.display = "block";
-                document.getElementById("enemyHealth").style.width = "100%";
-                removeLogText();
-                collectStoredCurrency();
-                resetPlayerStats();
-                isPlaying = false;
+                resetPlayerStateDuringDeathScreen();
             },5000);
         }
     }
@@ -143,12 +130,25 @@ if (isLevellingUp == true) {
     }
 }
 
+function resetPlayerStateDuringDeathScreen(){
+    player.currentHealth = player.maxHealth;                    
+    document.getElementById("startCombat").style.display = "block";
+    document.getElementById("enemyHealth").style.width = "100%";
+    removeLogText();
+    collectStoredCurrency();
+    resetPlayerStats();
+    isPlaying = false;
+}
+
 function defeatedEnemyHandler(){
     randomEnemySelector();
     xpGains();
     enemyLoot();
     addEnemiesToPool();
     changeLocation();
+    levellingUpHandler();
+    player.currentStage = increment(player.currentStage);
+    document.getElementById("enemyHealth").style.width = "0%";
 }
 
 function clearAllCombatIntervals(){
@@ -156,7 +156,7 @@ function clearAllCombatIntervals(){
     clearInterval(startPlayerAttack);
 }
 
-function deathScreen(){
+function animateDeathScreen(){
     var element = document.getElementById("deathScreen");
     element.classList.add("death-screen");
     element.classList.add("fadeIn");
