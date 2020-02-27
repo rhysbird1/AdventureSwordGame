@@ -12,7 +12,10 @@ function saveGame(){
 }
 
 function loadSave(){
-    player.boneShards = localStorage.getItem("boneShards");
+    //player.boneShards = localStorage.getItem("boneShards");
+    if (player.boneShards == null) {
+        player.boneShards = 0;
+    }
 }
 
 function deleteSave(){
@@ -404,6 +407,20 @@ function generateSkillCard(url, eleId){
 
 function addSkillCardClickEvent(){
     
+}
+
+function animateSkillCardScreen(){
+    var element = document.getElementById("deathScreen");
+    element.classList.add("death-screen");
+    element.classList.add("fadeIn");
+    setTimeout(function(){
+        element.classList.remove("fadeIn");
+        element.classList.add("fadeOut");
+    }, 5000);
+    setTimeout(function(){
+        element.classList.remove("death-screen");
+        element.classList.remove("fadeOut");
+    }, 8300);  
 }
 
 //========================================= TESTING ====================================
