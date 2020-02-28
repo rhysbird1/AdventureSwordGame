@@ -4,6 +4,12 @@
     cursor: default;
 }
 
+@media only screen and (max-width: 600px) {
+    .area {
+        font-size: 2px;
+    }
+}
+
 body {
     background-image: url('../images/village50.jpg');
     background-repeat: no-repeat;
