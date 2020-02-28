@@ -379,15 +379,18 @@ function RNGMinMax(min, max){
 
 function skillCardSelect(){
     isLevellingUp = false;
-    var overlayFade = document.getElementById("overlay");
-    overlayFade.style.opacity = "0";
+    var overlay = document.getElementById("overlay");
+    overlay.style.opacity = "0";
 //    if (num == 1){
 //        //statement
 //    }
     initialiseEnemy();
     setTimeout(function(){
+        overlay.style.display = "none";
+        overlay.style.opacity = "1";
         startCombat();
-    },500);
+        deleteSkillIcons("One");
+    },1000);
 }
 
 function overlayHandler(){
@@ -395,6 +398,11 @@ function overlayHandler(){
     overlay.style.display = "block";
     generateSkillCard(skills[0].url, skillImgElementIds[0]);
     console.log(skills[0].url, skillImgElementIds[0]);
+}
+
+function deleteSkillIcons(param){
+    var div = document.getElementById("skillCard" + param);
+    div.remove();
 }
 
 function generateSkillCard(url, eleId){
@@ -409,18 +417,30 @@ function addSkillCardClickEvent(){
     
 }
 
+function addSkillToCardHolder(){
+    
+}
+
+function animateCardHolder(){
+    
+}
+
+function removeCardHolder(){
+    
+}
+
 function animateSkillCardScreen(){
-    var element = document.getElementById("deathScreen");
+    var element = document.getElementById("overlay");
     element.classList.add("death-screen");
     element.classList.add("fadeIn");
     setTimeout(function(){
         element.classList.remove("fadeIn");
         element.classList.add("fadeOut");
-    }, 5000);
-    setTimeout(function(){
-        element.classList.remove("death-screen");
-        element.classList.remove("fadeOut");
-    }, 8300);  
+    }, 1000);
+//    setTimeout(function(){
+//        element.classList.remove("death-screen");
+//        element.classList.remove("fadeOut");
+//    }, 8300);  
 }
 
 //========================================= TESTING ====================================
