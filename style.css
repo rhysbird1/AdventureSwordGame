@@ -273,7 +273,7 @@ tr, td {
     transition-delay: 0.5s;
 }
 
-.card-container {
+.overlay-container {
     display: block;
     position: fixed;
     z-index: 2;
