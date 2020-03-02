@@ -263,27 +263,29 @@
         <div id="combatLog"></div>
     </div>
     <div id="overlay">
-        <div class="card-container">
+        <div class="overlay-container">
             <div class="title hud-box">Level Up!</div>
-            <div class="skill-card hud-box" id="skillCardOne" onclick="skillCardSelect('dmgBoost')">
-                <div class="title">Damage Boost</div>
-                <div class="skill-icon" id="skillIcon1">
+            <div id="cardContainer">
+                <div class="skill-card hud-box" id="skillCardOne">
+                    <div class="title">Damage Boost</div>
+                    <div class="skill-icon" id="skillIcon1">
+                    </div>
+                    <div class="info">Increase damage by 25%</div>
                 </div>
-                <div class="info">Increase damage by 25%</div>
-            </div>
-            <div class="skill-card hud-box" id="skillCardTwo" onclick="skillCardSelect(2)">
-                <div class="title">Max Health Boost</div>
-                <div class="skill-icon" id="skillIcon2">
-                    <img src="../images/Max%20Health%20Boost.png" width="333" height="333">
+                <div class="skill-card hud-box" id="skillCardTwo" onclick="skillCardSelect(2)">
+                    <div class="title">Max Health Boost</div>
+                    <div class="skill-icon" id="skillIcon2">
+                        <img src="../images/Max%20Health%20Boost.png" width="333" height="333">
+                    </div>
+                    <div class="info">Skill explanation</div>
                 </div>
-                <div class="info">Skill explanation</div>
-            </div>
-            <div class="skill-card hud-box" id="skillCardThree" onclick="skillCardSelect(3)">
-                <div class="title">Attack Speed Boost</div>
-                <div class="skill-icon" id="skillIcon3">
-                    <img src="../images/attack%20speed.png" width="333" height="333">
+                <div class="skill-card hud-box" id="skillCardThree" onclick="skillCardSelect(3)">
+                    <div class="title">Attack Speed Boost</div>
+                    <div class="skill-icon" id="skillIcon3">
+                        <img src="../images/attack%20speed.png" width="333" height="333">
+                    </div>
+                    <div class="info">Skill explanation</div>
                 </div>
-                <div class="info">Skill explanation</div>
             </div>
         </div>
     </div>
