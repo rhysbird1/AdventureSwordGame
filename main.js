@@ -405,13 +405,33 @@ function deleteSkillIcons(param){
     div.remove();
 }
 
+//TODO finish generateSkillCard function, then split and refactor for effectiveness
+
 function generateSkillCard(url, eleId){
+    var skillNode = document.createElement("DIV");
+    skillNode.setAttribute("class", "skill-card hud-box");
+    skillNode.setAttribute("id", "skillCardOne");
+    document.getElementById("cardContainer").appendChild(skillNode);
+    
+    var titleNode = document.createElement("DIV");
+    titleNode.setAttribute("class", "title");
+    titleNode.setAttribute("id", "title1");
+    
     var imgNode = document.createElement("IMG");
     imgNode.setAttribute("src", url);
     imgNode.setAttribute("width", "333");
     imgNode.setAttribute("height", "333");
     document.getElementById(eleId).appendChild(imgNode);
+    
+    var eleOnClick = document.getElementById("skillCardOne");
+    eleOnClick.setAttribute("onclick", "skillCardSelect('dmgBoost')");
 }
+
+const skillImgElementIds = [
+    "skillIcon1",
+    "skillIcon2",
+    "skillIcon3"
+];
 
 function addSkillCardClickEvent(){
     
@@ -468,6 +488,10 @@ function animateSkillCardScreen(){
 //    'html':'lol'
 //});
 
+var dmgBoostIncreasePercent = 25;
+var healthBoostIncreasePercent = 20;
+var atkSpdBoostIncreasePercent = 15;
+
 const skills = [
     {
         name: "Damage Boost",
@@ -484,14 +508,6 @@ const skills = [
         desc: "...",
         url: "../images/attack%20speed.png",
     },
-]
-
-console.log(skills[0].url);
-
-const skillImgElementIds = [
-    "skillIcon1",
-    "skillIcon2",
-    "skillIcon3"
 ];
 
 setInterval(function(){
